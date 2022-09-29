@@ -20,22 +20,6 @@ class Util {
             return console.log(err);
         }
     }
-
-    static async validate(array, method) {
-        if (method == "AND") {
-            const error = array.find((e) => !e.valor)
-    
-            if (error) {
-                return `${error.nome} não encontrado`
-            }
-        } else if (method == "OR") {
-            const error = array.filter((e) => !e.valor);
-
-            if (error.length == array.length) {
-                return `Nenhum dado recebido`
-            }
-        }
-    }
 }
 
 module.exports = Util;
