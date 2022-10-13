@@ -1,7 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 const { UsuariosModel } = require('../models/usuariosModel');
 const { JogosModel } = require('../models/jogosModel');
+const { moderadoresJogosModel } = require('../models/moderadoresJogos');
 const { sequelizeCon } = require('../config/db-config');
+
 
 class SpeedrunsModel extends Model {}
     
@@ -14,15 +16,24 @@ SpeedrunsModel.init({
     modelName: 'speedruns'
 });
 
-UsuariosModel.belongsToMany(JogosModel, { through: 'moderadoresJogos' });
-JogosModel.belongsToMany(UsuariosModel, { through: 'moderadoresJogos' });
+moderadoresJogosModel.belongsTo(UsuariosModel, {
+    foreignKey: 'usuarioEmail',
+    onDelete: 'CASCADE'
+});
+
+moderadoresJogosModel.belongsTo(JogosModel, {
+    foreignKey: 'jogoId',
+    onDelete: 'CASCADE'
+})
 
 SpeedrunsModel.belongsTo(UsuariosModel, {
-    foreignKey: 'runner'
+    foreignKey: 'runner',
+    onDelete: 'CASCADE'
 });
 
 SpeedrunsModel.belongsTo(JogosModel, {
-    foreignKey: 'jogoId'
+    foreignKey: 'jogoId',
+    onDelete: 'CASCADE'
 });
 
 sequelizeCon.sync();
